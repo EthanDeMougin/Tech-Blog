@@ -3,11 +3,11 @@ const { Post, Comment, User } = require('../models/');
 
 router.get('/', async (req, res) => {
   try {
-    const postData = await SomeModel.someSequelizeMethod({
-      include: [SomeOtherModel],
+    const postData = await Post.findAll({
+      include: [User],
     });
     const posts = postData.map((post) => post.get({ plain: true }));
-    res.render('hmmmm what view should we render?', { posts });
+    res.render('all-posts-admin', { posts, loggedIn: req.session.loggedIn });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
 router.get('/post/:id', async (req, res) => {
   try {
-    const postData = await SomeModel.findByPk( {
+    const postData = await Post.findByPk(req.params.id, {
       include: [
         User,
         {
@@ -27,7 +27,7 @@ router.get('/post/:id', async (req, res) => {
 
     if (postData) {
       const post = postData.get({ plain: true });
-      res.render('hmmmm what view should we render?', { post });
+      res.render('single-post', { post });
     } else {
       res.status(404).end();
     }
