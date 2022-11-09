@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
-const sequelize = require('../config/connection');
+const sequelize = require('../config/config');
 
 class User extends Model {
   checkPassword(loginPw) {
@@ -25,14 +25,8 @@ class User extends Model {
       allowNull: false,
       validate: {
         len: [8],
-        // TO DO! how to check the password lenght?
       },
-    },
-    date_created: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },    
+    },   
   },
   {
     hooks: {
